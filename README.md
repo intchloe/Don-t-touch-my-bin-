@@ -6,3 +6,7 @@ This uses the stem API for connecting through Tor and the request library for fe
 To download all the fingerprints: 
 
 $ curl -s https://check.torproject.org/exit-addresses | grep ExitNode  | sed 's/ExitNode //g' > fp.txt
+
+# Thanks
+
+To: https://keybase.io/likvidera
