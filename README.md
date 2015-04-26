@@ -1,4 +1,4 @@
 
-To download all the Exitnods fingerprint: 
+To download all the fingerprints: 
 
 $ curl -s https://check.torproject.org/exit-addresses | grep ExitNode  | sed 's/ExitNode //g' > fp.txt
