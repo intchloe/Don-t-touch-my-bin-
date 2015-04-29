@@ -33,6 +33,9 @@ print("SHA256 sum: " + file_hash)
 global url
 url = args.url or "http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe"
 
+if url.startswith("https://"):
+    print(term.format("Detected HTTPS connection, should be plaintext (HTTP)", term.Color.RED))
+
 print("URL: " + url)
 
 SOCKS_PORT = 1338
