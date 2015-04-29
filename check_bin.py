@@ -8,15 +8,16 @@ import os
 import argparse
 
 from stem.util import term
+from urllib3.util import Url
 
 argparse = argparse.ArgumentParser()
 argparse.add_argument("-f", "--file", dest = "filepath", help = "File path")
+argparse.add_argument("-u", "--url", dest = "url", help = "URL to download through nodes")
 args = argparse.parse_args()
 
 global file
 file = args.filepath
 
-SOCKS_PORT = 1338
 global file_hash
 
 if not file is None:
@@ -28,7 +29,14 @@ if not file is None:
 else:
     file_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
     
-print("File SHA256 sum is " + file_hash)
+print("SHA256 sum: " + file_hash)
+
+global url
+url = args.url or "http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe"
+
+print("URL: " + url)
+
+SOCKS_PORT = 1338
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 socket.socket = socks.socksocket
@@ -53,7 +61,7 @@ def start():
                     },
                 )
             m = hashlib.sha256()
-            r = requests.get("http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe", timeout=15)
+            r = requests.get(url, timeout=15)
             if r.status_code == 200:
                 m = hashlib.sha256()
                 m.update(r.content)
