@@ -41,8 +41,6 @@ print("URL: " + url)
 
 SOCKS_PORT = 1330
 
-from stem.descriptor.remote import DescriptorDownloader
-
 downloader = DescriptorDownloader(
   use_mirrors = False,
   timeout = 10,
