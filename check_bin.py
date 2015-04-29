@@ -9,7 +9,7 @@ import os
 from stem.util import term
 
 SOCKS_PORT = 1338
-putty_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
+file_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 socket.socket = socks.socksocket
@@ -39,7 +39,7 @@ def start():
                 m = hashlib.sha256()
                 m.update(r.content)
                 
-            if m.hexdigest() == putty_hash:
+            if m.hexdigest() == file_hash:
                 print(term.format("Not modified for node " + line, term.Color.GREEN))
                 tor_process.kill()
             else:
