@@ -7,6 +7,7 @@ import tempfile
 import os
 import argparse
 
+from stem.descriptor.remote import DescriptorDownloader
 from stem.util import term
 
 argparse = argparse.ArgumentParser()
@@ -27,7 +28,7 @@ if not file is None:
     file_hash = m.hexdigest()
 else:
     file_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
-    
+
 print("SHA256 sum: " + file_hash)
 
 global url
@@ -38,7 +39,22 @@ if url.startswith("https://"):
 
 print("URL: " + url)
 
-SOCKS_PORT = 1338
+SOCKS_PORT = 1330
+
+from stem.descriptor.remote import DescriptorDownloader
+
+downloader = DescriptorDownloader(
+  use_mirrors = False,
+  timeout = 10,
+)
+
+query = downloader.get_server_descriptors()
+
+for desc in downloader.get_server_descriptors():
+        if desc.exit_policy.is_exiting_allowed():
+                file = open("fp.txt", "a")
+                file.write('{}\n'.format(desc.fingerprint))
+                file.close()
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 socket.socket = socks.socksocket
@@ -47,6 +63,7 @@ def getaddrinfo(*args):
     return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
 
 socket.getaddrinfo = getaddrinfo
+
 
 def start():
     file = open("fp.txt", mode="r")
@@ -58,7 +75,7 @@ def start():
             tor_process = stem.process.launch_tor_with_config(
                 config = {
                         'SocksPort': str(SOCKS_PORT),
-                        'ExitNodes': line,
+                        'ExitNodes': str(line),
                         "DataDirectory": tempfile.gettempdir() + os.pathsep + str(SOCKS_PORT)
                     },
                 )
@@ -67,7 +84,7 @@ def start():
             if r.status_code == 200:
                 m = hashlib.sha256()
                 m.update(r.content)
-                
+
             if m.hexdigest() == file_hash:
                 print(term.format("Not modified for node " + line, term.Color.GREEN))
                 tor_process.kill()
@@ -86,6 +103,6 @@ def start():
                 tor_process.kill()
 
     file.close()
-    
+
 if __name__ == "__main__":
     start()
