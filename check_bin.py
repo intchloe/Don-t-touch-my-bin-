@@ -8,7 +8,6 @@ import os
 import argparse
 
 from stem.util import term
-from urllib3.util import Url
 
 argparse = argparse.ArgumentParser()
 argparse.add_argument("-f", "--file", dest = "filepath", help = "File path")
@@ -33,6 +32,9 @@ print("SHA256 sum: " + file_hash)
 
 global url
 url = args.url or "http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe"
+
+if url.startswith("https://"):
+    print(term.format("Detected HTTPS connection, should be plaintext (HTTP)", term.Color.RED))
 
 print("URL: " + url)
 
