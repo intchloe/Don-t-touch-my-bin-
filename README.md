@@ -9,6 +9,14 @@ To download all the fingerprints:
 $ curl -s https://check.torproject.org/exit-addresses | grep ExitNode  | sed 's/ExitNode //g' > fp.txt
 ```
 
+Defaults to download PuTTY if no URL is specified, and latest PuTTY hash if no file is specified
+
+## Synopsis
+
+```
+$ python3 check_bin.py [-f | --file <path>] [-u | --url <path>]
+```
+
 ## Requirements
 
 - stem, request (pip install stem request)
