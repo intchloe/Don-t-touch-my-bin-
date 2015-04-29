@@ -5,11 +5,30 @@ import stem.process
 import hashlib
 import tempfile
 import os
+import argparse
 
 from stem.util import term
 
+argparse = argparse.ArgumentParser()
+argparse.add_argument("-f", "--file", dest = "filepath", help = "File path")
+args = argparse.parse_args()
+
+global file
+file = args.filepath
+
 SOCKS_PORT = 1338
-file_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
+global file_hash
+
+if not file is None:
+    m = hashlib.sha256()
+    fis = open(file)
+    m.update(fis.read())
+    fis.close()
+    file_hash = m.hexdigest()
+else:
+    file_hash = "dc8d3ab6669b0a634de3e48477e7eb1282a770641194de2171ee9f3ec970c088"
+    
+print("File SHA256 sum is " + file_hash)
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 socket.socket = socks.socksocket
