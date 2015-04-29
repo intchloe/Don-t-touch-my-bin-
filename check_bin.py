@@ -56,6 +56,10 @@ for desc in downloader.get_server_descriptors():
                 file.write('{}\n'.format(desc.fingerprint))
                 file.close()
 
+xlines = sum(1 for line in open('fp.txt'))
+print "We will test %s nodes" %xlines
+atline = 0
+
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 socket.socket = socks.socksocket
 
@@ -70,8 +74,11 @@ def start():
     for line in file.readlines():
         line = line.strip()
         tor_process = None
+        global atline
+        atline += 1
+
         try:
-            print("Testing " + line)
+            print "Testing %s [%s of %s tested]" %(line, atline, xlines)
             tor_process = stem.process.launch_tor_with_config(
                 config = {
                         'SocksPort': str(SOCKS_PORT),
