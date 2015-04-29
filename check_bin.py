@@ -8,7 +8,6 @@ import os
 import argparse
 
 from stem.util import term
-from urllib3.util import Url
 
 argparse = argparse.ArgumentParser()
 argparse.add_argument("-f", "--file", dest = "filepath", help = "File path")
