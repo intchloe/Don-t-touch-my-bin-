@@ -19,7 +19,7 @@ $ python3 check_bin.py [-f | --file <path>] [-u | --url <path>]
 
 ## Requirements
 
-- stem, request (pip install stem request)
+- stem, request, PySocks (pip install stem request PySocks)
 
 ## Thanks
 
