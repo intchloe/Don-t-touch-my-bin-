@@ -40,6 +40,7 @@ if url.startswith("https://"):
 print("URL: " + url)
 
 SOCKS_PORT = 1330
+TIMEOUT = 10
 
 downloader = DescriptorDownloader(
   use_mirrors = False,
@@ -83,7 +84,7 @@ def start():
                         'ExitNodes': str(line),
                         "DataDirectory": tempfile.gettempdir() + os.pathsep + str(SOCKS_PORT)
                     },
-                )
+                timeout=TIMEOUT)
             m = hashlib.sha256()
             r = requests.get(url, timeout=15)
             if r.status_code == 200:
