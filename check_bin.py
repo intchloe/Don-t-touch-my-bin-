@@ -51,7 +51,7 @@ query = downloader.get_server_descriptors()
 
 for desc in downloader.get_server_descriptors():
         if desc.exit_policy.is_exiting_allowed():
-                file = open("fp.txt", "a")
+                file = open("fp.txt", "w")
                 file.write('{}\n'.format(desc.fingerprint))
                 file.close()
 
