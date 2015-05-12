@@ -56,7 +56,7 @@ for desc in downloader.get_server_descriptors():
                 file.close()
 
 xlines = sum(1 for line in open('fp.txt'))
-print("We will test " + str(xlines) + "nodes")
+print("We will test " + str(xlines) + " nodes")
 atline = 0
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
