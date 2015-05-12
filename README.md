@@ -17,9 +17,9 @@ Defaults to download PuTTY if no URL is specified, and latest PuTTY hash if no f
 $ python3 check_bin.py [-f | --file <path>] [-u | --url <path>]
 ```
 
-## Requirements
+## Dependencies
 
-- stem, request (pip install stem request)
+- stem, request, PySocks (pip install stem request PySocks)
 
 ## Thanks
 
