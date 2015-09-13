@@ -40,6 +40,7 @@ if url.startswith("https://"):
 print("URL: " + url)
 
 SOCKS_PORT = 1330
+TIMEOUT = 10
 
 downloader = DescriptorDownloader(
   use_mirrors = False,
@@ -50,12 +51,12 @@ query = downloader.get_server_descriptors()
 
 for desc in downloader.get_server_descriptors():
         if desc.exit_policy.is_exiting_allowed():
-                file = open("fp.txt", "a")
+                file = open("fp.txt", "w")
                 file.write('{}\n'.format(desc.fingerprint))
                 file.close()
 
 xlines = sum(1 for line in open('fp.txt'))
-print "We will test %s nodes" %xlines
+print("We will test " + str(xlines) + " nodes")
 atline = 0
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
@@ -76,14 +77,14 @@ def start():
         atline += 1
 
         try:
-            print "Testing %s [%s of %s tested]" %(line, atline, xlines)
+            print("Testing " + str(line) + " [" + str(atline) + " of " + str(xlines) + " tested]")
             tor_process = stem.process.launch_tor_with_config(
                 config = {
                         'SocksPort': str(SOCKS_PORT),
                         'ExitNodes': str(line),
                         "DataDirectory": tempfile.gettempdir() + os.pathsep + str(SOCKS_PORT)
                     },
-                )
+                timeout=TIMEOUT)
             m = hashlib.sha256()
             r = requests.get(url, timeout=15)
             if r.status_code == 200:
